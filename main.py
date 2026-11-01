@@ -10,7 +10,14 @@ def is_valid_move(index):
         return False
     return True
 
-# Ветка 2: Правила игры
+# Ветка 3: Победа
+def check_win(player):
+    win_combos = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+    for combo in win_combos:
+        if board[combo[0]] == board[combo[1]] == board[combo[2]] == player:
+            return True
+    return False
+
 def play_turn(index):
     global current_player
     if not is_valid_move(index):
@@ -19,7 +26,10 @@ def play_turn(index):
     board[index] = current_player
     buttons[index].config(text=current_player, state="disabled", disabledforeground="black")
     
-    # Смена игрока (по очереди)
+    if check_win(current_player):
+        messagebox.showinfo("Победа!", f"Победитель: {current_player}")
+        return
+        
     current_player = "O" if current_player == "X" else "X"
 
 def create_gui():
